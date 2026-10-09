@@ -7,7 +7,11 @@
 <style>
   /* Layout: texto e controle lado a lado no topo, depois uma grade de fichas, uma por local de votação. */
   :root {
-    --bg: #F2F4F6;
+    --bg: #B3162C;
+    --bg2: #8E0F22;
+    --on-bg: #FFFFFF;
+    --on-bg-soft: #F9D4DA;
+    --on-ink: #FFFFFF;
     --surface: #FFFFFF;
     --ink: #13212C;
     --muted: #55656F;
@@ -21,7 +25,11 @@
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #0E161D;
+      --bg: #7A0E20;
+      --bg2: #4F0914;
+      --on-bg: #FFFFFF;
+      --on-bg-soft: #F2C4CC;
+      --on-ink: #0E161D;
       --surface: #16212A;
       --ink: #E9EEF2;
       --muted: #9AAAB6;
@@ -34,7 +42,11 @@
     }
   }
   :root[data-theme="dark"] {
-    --bg: #0E161D;
+    --bg: #7A0E20;
+    --bg2: #4F0914;
+    --on-bg: #FFFFFF;
+    --on-bg-soft: #F2C4CC;
+    --on-ink: #0E161D;
     --surface: #16212A;
     --ink: #E9EEF2;
     --muted: #9AAAB6;
@@ -45,23 +57,24 @@
     --soft: #1D2B35;
     color-scheme: dark;
   }
-  body { background: var(--bg); color: var(--ink); font-family: var(--font-body); line-height: 1.5; }
+  body { background-color: var(--bg); background-image: linear-gradient(180deg, var(--bg) 0, var(--bg2) 100%); color: var(--on-bg); font-family: var(--font-body); line-height: 1.5; }
+  .sub { color: var(--on-bg-soft); }
   .f-display { font-family: var(--font-display); font-weight: 800; line-height: 0.95; letter-spacing: 0.005em; }
   .num { font-variant-numeric: tabular-nums; }
   .muted { color: var(--muted); }
-  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 3px; }
-  .eyebrow { font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--muted); }
+  .panel { background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 3px; box-shadow: 0 1px 0 rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.14); }
+  .eyebrow { font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--on-bg-soft); }
   h1, h2, h3 { text-wrap: balance; }
-  :focus-visible { outline: 2px solid var(--lula); outline-offset: 2px; }
+  :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; box-shadow: 0 0 0 5px #FFFFFF; }
   input[type="range"] { accent-color: var(--lula); height: 1.75rem; cursor: pointer; }
   .chip {
     border: 1px solid var(--line); background: var(--surface); color: var(--ink);
     border-radius: 3px; padding: 0.375rem 0.75rem; font-size: 0.875rem; font-weight: 500; cursor: pointer;
   }
   .chip:hover { border-color: var(--muted); }
-  .chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); border-color: var(--ink); }
   .btn {
-    border: 1px solid var(--ink); background: var(--ink); color: var(--bg);
+    border: 1px solid var(--ink); background: var(--ink); color: var(--on-ink);
     border-radius: 3px; padding: 0.5rem 1rem; font-size: 0.875rem; font-weight: 600; cursor: pointer;
   }
   .btn:hover { opacity: 0.88; }
@@ -95,7 +108,7 @@
         Cada número abaixo é o total de votos que Flávio Bolsonaro teve no 1.º turno em um local de votação.
         Para Lula ficar com 100% nesse local, todos esses eleitores precisam mudar de voto.
       </p>
-      <p class="mt-3 text-sm muted max-w-prose">
+      <p class="mt-3 text-sm sub max-w-prose">
         Se não der para virar todos, use a barra ao lado para ver quantos votos cada local precisa virar para atingir uma parte da meta.
       </p>
     </div>
@@ -125,10 +138,10 @@
     <div class="flex flex-wrap items-end justify-between gap-4">
       <div>
         <h2 id="locaisTitulo" class="f-display text-3xl sm:text-4xl uppercase">Local por local</h2>
-        <p class="mt-1 text-sm muted">Cada ficha é uma escola onde se vota. Uma escola reúne várias seções eleitorais.</p>
+        <p class="mt-1 text-sm sub">Cada ficha é uma escola onde se vota. Uma escola reúne várias seções eleitorais.</p>
       </div>
       <div class="flex items-center gap-2">
-        <label for="sort" class="text-sm muted">Ordenar por</label>
+        <label for="sort" class="text-sm sub">Ordenar por</label>
         <select id="sort">
           <option value="mais">Mais votos a tirar</option>
           <option value="menos">Menos votos a tirar</option>
@@ -139,7 +152,7 @@
 
     <div id="chips" class="mt-5 flex flex-wrap gap-2" role="group" aria-label="Filtrar por distrito"></div>
 
-    <p class="mt-5 text-sm flex flex-wrap gap-x-5 gap-y-1">
+    <p class="panel mt-5 text-sm flex flex-wrap gap-x-5 gap-y-1 px-4 py-2.5 w-fit max-w-full">
       <span><i class="sw" style="background: repeating-linear-gradient(45deg, var(--lula) 0 3px, var(--turn) 3px 6px)"></i>Votos a tirar de Flávio</span>
       <span><i class="sw" style="background: var(--flavio)"></i>Votos de Flávio que continuam</span>
     </p>
