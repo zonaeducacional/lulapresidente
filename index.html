@@ -1,11 +1,10 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>Conta da Virada</title>
+<title>A Virada · Salinas da Margarida</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com/3.4.17"></script>
 <style>
-  /* Layout: texto e controles lado a lado no topo, depois uma grade de fichas, uma por local de votação. */
   :root {
     --bg: #B3162C;
     --bg2: #8E0F22;
@@ -20,6 +19,7 @@
     --turn: #F0A9B5;
     --flavio: #2D5B8E;
     --soft: #E8ECEF;
+    --gold: #FFC72C;
     --font-display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
     --font-body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   }
@@ -38,6 +38,7 @@
       --turn: #74303C;
       --flavio: #78A9DE;
       --soft: #1D2B35;
+      --gold: #FFD95C;
       color-scheme: dark;
     }
   }
@@ -55,6 +56,7 @@
     --turn: #74303C;
     --flavio: #78A9DE;
     --soft: #1D2B35;
+    --gold: #FFD95C;
     color-scheme: dark;
   }
   body { background-color: var(--bg); background-image: linear-gradient(180deg, var(--bg) 0, var(--bg2) 100%); color: var(--on-bg); font-family: var(--font-body); line-height: 1.5; }
@@ -78,6 +80,8 @@
     border-radius: 3px; padding: 0.5rem 1rem; font-size: 0.875rem; font-weight: 600; cursor: pointer;
   }
   .btn:hover { opacity: 0.88; }
+  .btn-gold { background: var(--gold); color: #13212C; border-color: var(--gold); }
+  .btn-gold:hover { opacity: 0.9; }
   select {
     background: var(--surface); color: var(--ink); border: 1px solid var(--line);
     border-radius: 3px; padding: 0.375rem 0.5rem; font-size: 0.875rem;
@@ -97,59 +101,136 @@
   dl.facts dt { color: var(--muted); }
   dl.facts dd { margin: 0; text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
   a.link { color: var(--flavio); text-decoration: underline; text-underline-offset: 2px; }
+
+  /* ===== Semiótica / ação ===== */
+  .star { color: var(--gold); display: inline-block; }
+  .accent { color: var(--gold); }
+  .hero-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; overflow: hidden; border-radius: 3px; }
+  .stat { background: var(--surface); color: var(--ink); padding: 1.25rem 1rem; text-align: center; }
+  .stat + .stat { border-left: 1px solid var(--line); }
+  .stat-star { display: block; font-size: 1.5rem; line-height: 1; margin-bottom: 0.5rem; color: var(--gold); }
+  .stat-num { display: block; font-size: 2.5rem; line-height: 1; color: var(--lula); }
+  .stat-label { display: block; font-size: 0.7rem; color: var(--muted); margin-top: 0.35rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+  .mission { position: relative; overflow: hidden; }
+  .mission::before { content: "★"; position: absolute; top: -1rem; right: -0.5rem; font-size: 8rem; line-height: 1; color: var(--gold); opacity: 0.08; pointer-events: none; }
+  .slider-row { display: flex; align-items: center; gap: 1rem; }
+  .slider-label { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; }
+  .total-display { display: flex; align-items: baseline; gap: 0.75rem; flex-wrap: wrap; }
+  .cta-section { background: var(--surface); color: var(--ink); border-radius: 3px; border: 1px solid var(--line); position: relative; overflow: hidden; }
+  .cta-section::before { content: "★"; position: absolute; bottom: -2rem; right: -1rem; font-size: 12rem; line-height: 1; color: var(--lula); opacity: 0.06; pointer-events: none; }
+  .action-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 1rem; }
+  .action-item { display: flex; gap: 1rem; align-items: flex-start; }
+  .action-num { flex-shrink: 0; width: 2rem; height: 2rem; display: grid; place-items: center; background: var(--lula); color: #fff; border-radius: 999px; font-weight: 700; font-family: var(--font-display); font-size: 1.1rem; }
+  .action-text { font-size: 0.9375rem; }
+  .action-text strong { display: block; font-weight: 600; }
+  .progress-track { height: 8px; background: var(--soft); border-radius: 999px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--lula), var(--gold)); border-radius: 999px; transition: width 0.35s ease; }
+  .territory-head { display: flex; align-items: center; gap: 0.5rem; }
+  .territory-num { font-size: 0.7rem; font-weight: 700; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+  .card-total { display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; }
+  .card-total .arrow { color: var(--gold); font-size: 1.5rem; }
+  .bn-note { background: var(--soft); border-left: 3px solid var(--gold); padding: 0.75rem 1rem; font-size: 0.8125rem; border-radius: 0 3px 3px 0; }
 </style>
 
 <main class="mx-auto w-full max-w-5xl px-4 sm:px-6 py-8 sm:py-12">
 
-  <section class="grid gap-8 lg:grid-cols-[1.05fr_1fr] lg:gap-10 items-start">
+  <!-- ===================== HERO ===================== -->
+  <header class="grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-10 items-start">
     <div class="min-w-0">
-      <p class="eyebrow">Salinas da Margarida (BA) · 1.º turno de 2026</p>
-      <h1 class="f-display mt-3 text-5xl sm:text-6xl uppercase">Quantos votos virar para Lula em cada local</h1>
+      <p class="eyebrow">Salinas da Margarida · Bahia · 1.º turno de 2026</p>
+      <h1 class="f-display mt-3 text-5xl sm:text-7xl uppercase leading-[0.9]">
+        A <span class="accent">virada</span><br>começa aqui
+      </h1>
       <p class="mt-5 text-base sm:text-lg max-w-prose">
-        Em cada local de votação, mostramos quantos votos Lula pode ganhar no 2.º turno:
-        os de Flávio Bolsonaro, que precisam mudar de voto, e os dos demais candidatos do 1.º turno, que podem ser conquistados.
+        Cada voto virado é um passo para Lula. Veja quantos votos conquistar em cada local e faça parte desta virada.
       </p>
       <p class="mt-3 text-sm sub max-w-prose">
-        O máximo possível é virar todos eles. Se não der, use as barras ao lado para ver quanto cada local precisa virar para atingir uma parte da meta.
+        O máximo possível é virar todos os votos de Flávio, conquistar todos os dos demais candidatos e recuperar os votos brancos e nulos. Ajuste as barras ao lado para montar sua meta.
       </p>
     </div>
 
-    <div class="panel p-5 sm:p-6 min-w-0">
-      <label for="p" class="block font-semibold">Quantos votos de Flávio queremos tirar?</label>
-      <div class="mt-2 flex items-center gap-4">
-        <input id="p" type="range" min="0" max="100" step="5" value="100" class="w-full min-w-0">
-        <output id="pOut" for="p" class="f-display text-4xl num w-20 text-right shrink-0">100%</output>
+    <div class="hero-stats panel">
+      <div class="stat">
+        <span class="stat-star">★</span>
+        <span class="stat-num f-display num" id="heroTotal">2.974</span>
+        <span class="stat-label">votos para virar</span>
       </div>
-
-      <label for="q" class="mt-4 block font-semibold">Quantos votos dos demais candidatos queremos conquistar?</label>
-      <div class="mt-2 flex items-center gap-4">
-        <input id="q" type="range" min="0" max="100" step="5" value="100" class="w-full min-w-0">
-        <output id="qOut" for="q" class="f-display text-4xl num w-20 text-right shrink-0">100%</output>
+      <div class="stat">
+        <span class="stat-star">▲</span>
+        <span class="stat-num f-display num">10</span>
+        <span class="stat-label">locais para conquistar</span>
       </div>
-
-      <div class="mt-3 flex flex-wrap items-center gap-2">
-        <span class="text-sm muted">Mesma meta nas duas barras:</span>
-        <span id="presets" class="flex flex-wrap gap-2"></span>
-      </div>
-
-      <div class="mt-5 pt-5 border-t" style="border-color: var(--line)" aria-live="polite">
-        <p id="total" class="f-display text-7xl sm:text-8xl num" style="color: var(--lula)">0</p>
-        <p id="totalLabel" class="mt-1 font-medium"></p>
-        <p id="totalSplit" class="mt-3 text-sm"></p>
-      </div>
-
-      <div class="mt-5 flex flex-wrap items-center gap-3">
-        <button id="copy" type="button" class="btn">Copiar lista</button>
-        <span id="copyMsg" class="text-sm muted" role="status"></span>
-      </div>
-      <textarea id="copyBox" hidden readonly rows="8" class="mt-3 w-full text-sm p-2" style="background: var(--soft); color: var(--ink); border: 1px solid var(--line); border-radius: 3px;" aria-label="Texto da lista para copiar"></textarea>
     </div>
+  </header>
+
+  <!-- ===================== PAINEL DE MISSÃO ===================== -->
+  <section class="panel mission mt-10 p-5 sm:p-6 min-w-0">
+    <h2 class="f-display text-2xl uppercase">Monte sua meta</h2>
+    <p class="text-sm muted mt-1">Arraste as barras e veja quantos votos precisamos conquistar em cada local.</p>
+
+    <div class="mt-5 grid gap-4">
+      <div>
+        <label for="p" class="slider-label">
+          <span class="star">↑</span> Tirar de Flávio
+        </label>
+        <div class="slider-row mt-2">
+          <input id="p" type="range" min="0" max="100" step="5" value="100" class="w-full min-w-0">
+          <output id="pOut" for="p" class="f-display text-4xl num w-20 text-right shrink-0">100%</output>
+        </div>
+      </div>
+
+      <div>
+        <label for="q" class="slider-label">
+          <span class="star">★</span> Conquistar dos demais candidatos
+        </label>
+        <div class="slider-row mt-2">
+          <input id="q" type="range" min="0" max="100" step="5" value="100" class="w-full min-w-0">
+          <output id="qOut" for="q" class="f-display text-4xl num w-20 text-right shrink-0">100%</output>
+        </div>
+      </div>
+
+      <div>
+        <label for="bn" class="slider-label">
+          <span class="star">◆</span> Recuperar votos brancos e nulos
+        </label>
+        <div class="slider-row mt-2">
+          <input id="bn" type="range" min="0" max="100" step="5" value="100" class="w-full min-w-0">
+          <output id="bnOut" for="bn" class="f-display text-4xl num w-20 text-right shrink-0">100%</output>
+        </div>
+        <p class="bn-note mt-2">
+          <strong>531 votos</strong> ficaram em branco (173) ou nulos (358) para presidente em Salinas da Margarida no 1.º turno de 2022. São eleitores que podem escolher Lula no 2.º turno.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-3 flex flex-wrap items-center gap-2">
+      <span class="text-sm muted">Mesma meta nas três barras:</span>
+      <span id="presets" class="flex flex-wrap gap-2"></span>
+    </div>
+
+    <div class="mt-5 pt-5 border-t" style="border-color: var(--line)" aria-live="polite">
+      <div class="total-display">
+        <p id="total" class="f-display text-7xl sm:text-8xl num" style="color: var(--lula)">2.974</p>
+        <p id="totalLabel" class="font-medium"></p>
+      </div>
+      <p id="totalSplit" class="mt-3 text-sm"></p>
+      <div class="progress-track mt-4" role="progressbar" aria-label="Progresso da meta">
+        <div id="progressFill" class="progress-fill" style="width: 100%"></div>
+      </div>
+    </div>
+
+    <div class="mt-5 flex flex-wrap items-center gap-3">
+      <button id="copy" type="button" class="btn">Copiar lista</button>
+      <span id="copyMsg" class="text-sm muted" role="status"></span>
+    </div>
+    <textarea id="copyBox" hidden readonly rows="8" class="mt-3 w-full text-sm p-2" style="background: var(--soft); color: var(--ink); border: 1px solid var(--line); border-radius: 3px;" aria-label="Texto da lista para copiar"></textarea>
   </section>
 
+  <!-- ===================== TERRITÓRIOS ===================== -->
   <section class="mt-12" aria-labelledby="locaisTitulo">
     <div class="flex flex-wrap items-end justify-between gap-4">
       <div>
-        <h2 id="locaisTitulo" class="f-display text-3xl sm:text-4xl uppercase">Local por local</h2>
+        <h2 id="locaisTitulo" class="f-display text-3xl sm:text-4xl uppercase">Conquiste cada território</h2>
         <p class="mt-1 text-sm sub">Cada ficha é uma escola onde se vota. Uma escola reúne várias seções eleitorais.</p>
       </div>
       <div class="flex items-center gap-2">
@@ -166,17 +247,46 @@
 
     <p class="panel mt-5 text-sm flex flex-wrap gap-x-5 gap-y-1 px-4 py-2.5 w-fit max-w-full">
       <span><i class="sw" style="background: repeating-linear-gradient(45deg, var(--lula) 0 3px, var(--turn) 3px 6px)"></i>Tirados de Flávio</span>
-      <span><i class="sw" style="background: var(--lula)"></i>Conquistados dos demais candidatos</span>
-      <span><i class="sw" style="background: var(--flavio)"></i>Votos que continuam onde estão</span>
+      <span><i class="sw" style="background: var(--lula)"></i>Conquistados dos demais</span>
+      <span><i class="sw" style="background: var(--flavio)"></i>Continuam onde estão</span>
     </p>
 
     <div id="list" class="mt-4 grid gap-4 md:grid-cols-2"></div>
   </section>
 
+  <!-- ===================== CHAMADO À AÇÃO ===================== -->
+  <section class="cta-section mt-12 p-6 sm:p-8">
+    <h2 class="f-display text-3xl sm:text-4xl uppercase">Agora é com você</h2>
+    <p class="mt-2 text-sm muted max-w-prose">A virada não acontece sozinha. Cada pessoa que conversa com um vizinho, compartilha uma meta ou leva alguém para votar faz a diferença.</p>
+    <ol class="action-list mt-6">
+      <li class="action-item">
+        <span class="action-num">1</span>
+        <span class="action-text"><strong>Converse com vizinhos e amigos</strong>Mostre os números do seu bairro e explique por que cada voto conta.</span>
+      </li>
+      <li class="action-item">
+        <span class="action-num">2</span>
+        <span class="action-text"><strong>Compartilhe esta meta</strong>Envie a lista para grupos de WhatsApp e redes sociais.</span>
+      </li>
+      <li class="action-item">
+        <span class="action-num">3</span>
+        <span class="action-text"><strong>Leve a virada para o seu bairro</strong>Use os dados do seu local de votação para mobilizar sua comunidade.</span>
+      </li>
+      <li class="action-item">
+        <span class="action-num">4</span>
+        <span class="action-text"><strong>No dia da eleição, vote e leve quem você ama</strong>A abstenção não entra nesta conta, mas cada voto a mais é uma vitória a mais.</span>
+      </li>
+    </ol>
+    <div class="mt-6">
+      <button id="share" type="button" class="btn btn-gold">★ Compartilhe esta meta</button>
+    </div>
+  </section>
+
+  <!-- ===================== ENTENDA A MISSÃO ===================== -->
   <section class="mt-12 panel p-5 sm:p-6 text-sm leading-relaxed">
-    <h2 class="font-semibold text-base">Como ler</h2>
+    <h2 class="font-semibold text-base">Entenda a missão</h2>
     <ul class="mt-2 grid gap-2 list-disc pl-5 max-w-prose">
       <li>O máximo possível em cada local é virar todos os votos de Flávio e conquistar todos os dos demais candidatos. Somando os 10 locais, são 1.991 de Flávio e 452 dos demais, 2.443 no total.</li>
+      <li>Além disso, há <strong>531 votos brancos e nulos</strong> para presidente no 1.º turno de 2022 (173 brancos e 358 nulos). Esses eleitores podem escolher Lula no 2.º turno. Com eles, o total máximo chega a <strong>2.974 votos</strong>.</li>
       <li>Os votos dos demais candidatos não são tirados de ninguém. São eleitores que, no 2.º turno, podem escolher Lula, escolher Flávio ou não votar.</li>
       <li>A abstenção não entra nessa conta.</li>
       <li>Em todos os locais Lula já teve mais votos que Flávio no 1.º turno. Virar votos aumenta a vantagem, mas não é preciso para vencer.</li>
@@ -184,7 +294,7 @@
     </ul>
     <p class="mt-4 muted max-w-prose">
       Dados do 1.º turno de 2026 copiados do <a class="link" href="https://tatipara.github.io/vira_voto/#uf=BA&amp;mun=38474" target="_blank" rel="noopener">Vira Voto</a>, que usa o Portal de Dados Abertos do TSE (gerado em 09/10/2026, 01:30 UTC).
-      O site de origem chama a linha de Flávio de "Bolsonaro 2026, 1.º turno". Os dados não são separados por seção, só por local de votação.
+      Os votos brancos e nulos são do 1.º turno de 2022, os dados mais recentes disponíveis publicamente para presidente em Salinas da Margarida (fonte: G1/TSE). O site de origem chama a linha de Flávio de "Bolsonaro 2026, 1.º turno". Os dados não são separados por seção, só por local de votação.
     </p>
   </section>
 </main>
@@ -203,7 +313,14 @@
     { nome: "Escola Valdemar Alves Menezes",              dist: "Centro",               num: 1015, aptos: 945,  lula22: 588,  lula26: 550,  bol: 126, demais: 30,  abst: 202, cota: 14 }
   ];
 
-  var state = { p: 100, q: 100, dist: "Todos", sort: "mais" };
+  /* Votos brancos e nulos para presidente em Salinas da Margarida, 1.º turno de 2022 (fonte: G1/TSE) */
+  var BRANCOS = 173;
+  var NULOS = 358;
+  var BN_TOTAL = BRANCOS + NULOS; /* 531 */
+
+  var MAX_TOTAL = DATA.reduce(function (s, d) { return s + d.bol + d.demais; }, 0) + BN_TOTAL;
+
+  var state = { p: 100, q: 100, bn: 100, dist: "Todos", sort: "mais" };
   var opened = {};
   var copyTimer = null;
 
@@ -234,26 +351,34 @@
     var d = x.d;
     var all = d.bol + d.demais;
     var rest = all - x.t;
+    var pct = all ? Math.round(x.t / all * 100) : 0;
     var seg = "";
     if (x.r > 0) seg += "<span class=\"seg turn\" style=\"width:" + (x.r / all * 100) + "%\"></span>";
     if (x.q > 0) seg += "<span class=\"seg won\" style=\"width:" + (x.q / all * 100) + "%\"></span>";
     if (rest > 0) seg += "<span class=\"seg flavio\" style=\"width:" + (rest / all * 100) + "%\"></span>";
-    var label = f(x.r) + " votos tirados de Flávio, " + f(x.q) + " conquistados dos demais candidatos, " + f(rest) + " continuam onde estão";
+    var label = f(x.r) + " votos tirados de Flávio, " + f(x.q) + " conquistados dos demais, " + f(rest) + " continuam onde estão";
     var id = "n" + d.num;
     return "<article class=\"panel p-5 min-w-0\">" +
-      "<h3 class=\"font-semibold leading-snug\">" + d.nome + "</h3>" +
-      "<p class=\"text-sm muted mt-0.5\">" + distLabel(d.dist) + " · Zona 30 · nº " + d.num + "</p>" +
-      "<p class=\"f-display text-7xl num mt-4\" style=\"color: var(--lula)\">" + f(x.t) + "</p>" +
-      "<p class=\"text-sm mt-1\">votos a virar para Lula <span class=\"muted\">(de " + f(all) + " de Flávio e dos demais)</span></p>" +
+      "<div class=\"territory-head\">" +
+        "<span class=\"star\">★</span>" +
+        "<span class=\"territory-num\">" + distLabel(d.dist) + " · Zona 30 · nº " + d.num + "</span>" +
+      "</div>" +
+      "<h3 class=\"font-semibold leading-snug mt-1\">" + d.nome + "</h3>" +
+      "<div class=\"card-total mt-4\">" +
+        "<span class=\"arrow\">↑</span>" +
+        "<span class=\"f-display text-6xl num\" style=\"color: var(--lula)\">" + f(x.t) + "</span>" +
+        "<span class=\"text-sm\">votos para conquistar</span>" +
+      "</div>" +
+      "<p class=\"text-xs muted mt-1\">" + pct + "% dos " + f(all) + " votos de Flávio e dos demais neste local</p>" +
       "<div class=\"bar mt-4\" role=\"img\" aria-label=\"" + label + "\">" + seg + "</div>" +
       "<div class=\"mt-4 grid grid-cols-2 gap-4\">" +
         "<div class=\"min-w-0\">" +
-          "<p class=\"text-sm muted\">Tirar de Flávio</p>" +
+          "<p class=\"text-xs muted uppercase tracking-wide\">↑ Tirar de Flávio</p>" +
           "<p class=\"f-display text-4xl num mt-1\">" + f(x.r) + "</p>" +
           "<p class=\"text-xs muted mt-1\">de " + f(d.bol) + " que ele teve</p>" +
         "</div>" +
         "<div class=\"min-w-0\">" +
-          "<p class=\"text-sm muted\">Conquistar dos demais</p>" +
+          "<p class=\"text-xs muted uppercase tracking-wide\">★ Conquistar dos demais</p>" +
           "<p class=\"f-display text-4xl num mt-1\">" + f(x.q) + "</p>" +
           "<p class=\"text-xs muted mt-1\">de " + f(d.demais) + " que tiveram</p>" +
         "</div>" +
@@ -274,12 +399,18 @@
 
   function buildText(rows) {
     var tot = 0;
-    var lines = ["Votos a virar para Lula, Salinas da Margarida, 1.º turno de 2026 (" + state.p + "% dos votos de Flávio e " + state.q + "% dos demais candidatos):"];
+    var lines = ["★ A VIRADA — Salinas da Margarida, 1.º turno de 2026", ""];
+    lines.push("Meta: " + state.p + "% dos votos de Flávio + " + state.q + "% dos demais + " + state.bn + "% dos brancos e nulos");
+    lines.push("");
     rows.forEach(function (x) {
       tot += x.t;
-      lines.push("- " + x.d.nome + ": " + f(x.t) + " (" + f(x.r) + " de Flávio + " + f(x.q) + " dos demais)");
+      lines.push("↑ " + x.d.nome + ": " + f(x.t) + " votos (" + f(x.r) + " de Flávio + " + f(x.q) + " dos demais)");
     });
-    lines.push("Total: " + f(tot));
+    var bn = Math.round(BN_TOTAL * state.bn / 100);
+    tot += bn;
+    lines.push("◆ Votos brancos e nulos: " + f(bn) + " (de " + f(BN_TOTAL) + " disponíveis)");
+    lines.push("");
+    lines.push("★ TOTAL: " + f(tot) + " votos para virar");
     return lines.join("\n");
   }
 
@@ -289,18 +420,27 @@
     var sumR = 0, sumQ = 0, sumAll = 0;
     rows.forEach(function (x) { sumR += x.r; sumQ += x.q; sumAll += x.d.bol + x.d.demais; });
 
+    var bnValue = Math.round(BN_TOTAL * state.bn / 100);
+    var grandTotal = sumR + sumQ + bnValue;
+    var grandAll = sumAll + BN_TOTAL;
+
     $("pOut").textContent = state.p + "%";
     $("qOut").textContent = state.q + "%";
-    $("total").textContent = f(sumR + sumQ);
+    $("bnOut").textContent = state.bn + "%";
+    $("total").textContent = f(grandTotal);
     $("totalLabel").textContent = "votos a virar para Lula em " + n + (n === 1 ? " local" : " locais") +
-      " (de " + f(sumAll) + " de Flávio e dos demais)";
-    $("totalSplit").innerHTML = "<strong class=\"num\">" + f(sumR) + "</strong> tirados de Flávio + <strong class=\"num\">" + f(sumQ) + "</strong> conquistados dos demais candidatos";
+      " + votos brancos e nulos (de " + f(grandAll) + " no total)";
+    $("totalSplit").innerHTML = "<strong class=\"num\">" + f(sumR) + "</strong> de Flávio + <strong class=\"num\">" + f(sumQ) + "</strong> dos demais + <strong class=\"num\">" + f(bnValue) + "</strong> brancos/nulos";
+
+    var progress = grandAll ? Math.round(grandTotal / grandAll * 100) : 0;
+    $("progressFill").style.width = progress + "%";
+    $("progressFill").parentNode.setAttribute("aria-valuenow", String(progress));
 
     $("list").innerHTML = rows.map(cardHtml).join("");
 
     Array.prototype.forEach.call($("presets").children, function (b) {
       var v = Number(b.dataset.v);
-      b.setAttribute("aria-pressed", String(v === state.p && v === state.q));
+      b.setAttribute("aria-pressed", String(v === state.p && v === state.q && v === state.bn));
     });
     Array.prototype.forEach.call($("chips").children, function (b) {
       b.setAttribute("aria-pressed", String(b.dataset.v === state.dist));
@@ -323,10 +463,11 @@
 
   $("p").addEventListener("input", function (e) { state.p = Number(e.target.value); render(); });
   $("q").addEventListener("input", function (e) { state.q = Number(e.target.value); render(); });
+  $("bn").addEventListener("input", function (e) { state.bn = Number(e.target.value); render(); });
   $("presets").addEventListener("click", function (e) {
     var b = e.target.closest("button"); if (!b) return;
-    state.p = Number(b.dataset.v); state.q = state.p;
-    $("p").value = state.p; $("q").value = state.q; render();
+    state.p = Number(b.dataset.v); state.q = state.p; state.bn = state.p;
+    $("p").value = state.p; $("q").value = state.q; $("bn").value = state.bn; render();
   });
   $("chips").addEventListener("click", function (e) {
     var b = e.target.closest("button"); if (!b) return;
@@ -343,8 +484,8 @@
     clearTimeout(copyTimer);
     copyTimer = setTimeout(function () { $("copyMsg").textContent = ""; }, 3500);
   }
-  $("copy").addEventListener("click", function () {
-    var text = buildText(visibleRows());
+
+  function doCopy(text) {
     var box = $("copyBox");
     function fallback() {
       box.value = text; box.hidden = false; box.focus(); box.select();
@@ -353,6 +494,20 @@
     try {
       navigator.clipboard.writeText(text).then(function () { box.hidden = true; say("Lista copiada."); }, fallback);
     } catch (err) { fallback(); }
+  }
+
+  $("copy").addEventListener("click", function () {
+    doCopy(buildText(visibleRows()));
+  });
+
+  $("share").addEventListener("click", function () {
+    var text = buildText(visibleRows());
+    if (navigator.share) {
+      navigator.share({ title: "A Virada — Salinas da Margarida", text: text }).catch(function () {});
+    } else {
+      var url = "https://wa.me/?text=" + encodeURIComponent(text);
+      window.open(url, "_blank", "noopener");
+    }
   });
 
   buildControls();
