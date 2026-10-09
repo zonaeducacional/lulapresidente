@@ -1,0 +1,314 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Conta da Virada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<style>
+  /* Layout: texto e controle lado a lado no topo, depois uma grade de fichas, uma por local de votação. */
+  :root {
+    --bg: #F2F4F6;
+    --surface: #FFFFFF;
+    --ink: #13212C;
+    --muted: #55656F;
+    --line: #D6DCE1;
+    --lula: #C21F3A;
+    --turn: #F0A9B5;
+    --flavio: #2D5B8E;
+    --soft: #E8ECEF;
+    --font-display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+    --font-body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0E161D;
+      --surface: #16212A;
+      --ink: #E9EEF2;
+      --muted: #9AAAB6;
+      --line: #27353F;
+      --lula: #EC5A72;
+      --turn: #74303C;
+      --flavio: #78A9DE;
+      --soft: #1D2B35;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0E161D;
+    --surface: #16212A;
+    --ink: #E9EEF2;
+    --muted: #9AAAB6;
+    --line: #27353F;
+    --lula: #EC5A72;
+    --turn: #74303C;
+    --flavio: #78A9DE;
+    --soft: #1D2B35;
+    color-scheme: dark;
+  }
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-body); line-height: 1.5; }
+  .f-display { font-family: var(--font-display); font-weight: 800; line-height: 0.95; letter-spacing: 0.005em; }
+  .num { font-variant-numeric: tabular-nums; }
+  .muted { color: var(--muted); }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 3px; }
+  .eyebrow { font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--muted); }
+  h1, h2, h3 { text-wrap: balance; }
+  :focus-visible { outline: 2px solid var(--lula); outline-offset: 2px; }
+  input[type="range"] { accent-color: var(--lula); height: 1.75rem; cursor: pointer; }
+  .chip {
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+    border-radius: 3px; padding: 0.375rem 0.75rem; font-size: 0.875rem; font-weight: 500; cursor: pointer;
+  }
+  .chip:hover { border-color: var(--muted); }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .btn {
+    border: 1px solid var(--ink); background: var(--ink); color: var(--bg);
+    border-radius: 3px; padding: 0.5rem 1rem; font-size: 0.875rem; font-weight: 600; cursor: pointer;
+  }
+  .btn:hover { opacity: 0.88; }
+  select {
+    background: var(--surface); color: var(--ink); border: 1px solid var(--line);
+    border-radius: 3px; padding: 0.375rem 0.5rem; font-size: 0.875rem;
+  }
+  .bar { display: flex; gap: 2px; height: 14px; overflow: hidden; border-radius: 2px; background: var(--soft); }
+  .seg { display: block; height: 100%; min-width: 2px; }
+  .seg.turn { background: repeating-linear-gradient(45deg, var(--lula) 0 3px, var(--turn) 3px 6px); }
+  .seg.flavio { background: var(--flavio); }
+  @media (prefers-reduced-motion: no-preference) { .seg { transition: width 0.25s ease; } }
+  .sw { display: inline-block; width: 14px; height: 10px; border-radius: 2px; vertical-align: -1px; margin-right: 6px; }
+  details > summary { cursor: pointer; font-size: 0.875rem; font-weight: 600; color: var(--muted); list-style: none; padding-block: 0.25rem; }
+  details > summary::-webkit-details-marker { display: none; }
+  details > summary::before { content: "+"; display: inline-block; width: 1.1em; font-weight: 700; }
+  details[open] > summary::before { content: "\2212"; }
+  dl.facts { display: grid; grid-template-columns: 1fr auto; gap: 0.35rem 1rem; font-size: 0.875rem; margin-top: 0.5rem; }
+  dl.facts dt { color: var(--muted); }
+  dl.facts dd { margin: 0; text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+  a.link { color: var(--flavio); text-decoration: underline; text-underline-offset: 2px; }
+</style>
+
+<main class="mx-auto w-full max-w-5xl px-4 sm:px-6 py-8 sm:py-12">
+
+  <section class="grid gap-8 lg:grid-cols-[1.05fr_1fr] lg:gap-10 items-start">
+    <div class="min-w-0">
+      <p class="eyebrow">Salinas da Margarida (BA) · 1.º turno de 2026</p>
+      <h1 class="f-display mt-3 text-5xl sm:text-6xl uppercase">Quantos votos tirar de Flávio em cada local</h1>
+      <p class="mt-5 text-base sm:text-lg max-w-prose">
+        Cada número abaixo é o total de votos que Flávio Bolsonaro teve no 1.º turno em um local de votação.
+        Para Lula ficar com 100% nesse local, todos esses eleitores precisam mudar de voto.
+      </p>
+      <p class="mt-3 text-sm muted max-w-prose">
+        Se não der para virar todos, use a barra ao lado para ver quantos votos cada local precisa virar para atingir uma parte da meta.
+      </p>
+    </div>
+
+    <div class="panel p-5 sm:p-6 min-w-0">
+      <label for="p" class="block font-semibold">Qual parte dos votos de Flávio queremos tirar?</label>
+      <div class="mt-3 flex items-center gap-4">
+        <input id="p" type="range" min="0" max="100" step="5" value="100" class="w-full min-w-0">
+        <output id="pOut" for="p" class="f-display text-4xl num w-20 text-right shrink-0">100%</output>
+      </div>
+      <div id="presets" class="mt-3 flex flex-wrap gap-2"></div>
+
+      <div class="mt-5 pt-5 border-t" style="border-color: var(--line)" aria-live="polite">
+        <p id="total" class="f-display text-7xl sm:text-8xl num" style="color: var(--lula)">0</p>
+        <p id="totalLabel" class="mt-1 font-medium"></p>
+      </div>
+
+      <div class="mt-5 flex flex-wrap items-center gap-3">
+        <button id="copy" type="button" class="btn">Copiar lista</button>
+        <span id="copyMsg" class="text-sm muted" role="status"></span>
+      </div>
+      <textarea id="copyBox" hidden readonly rows="8" class="mt-3 w-full text-sm p-2" style="background: var(--soft); color: var(--ink); border: 1px solid var(--line); border-radius: 3px;" aria-label="Texto da lista para copiar"></textarea>
+    </div>
+  </section>
+
+  <section class="mt-12" aria-labelledby="locaisTitulo">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <h2 id="locaisTitulo" class="f-display text-3xl sm:text-4xl uppercase">Local por local</h2>
+        <p class="mt-1 text-sm muted">Cada ficha é uma escola onde se vota. Uma escola reúne várias seções eleitorais.</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <label for="sort" class="text-sm muted">Ordenar por</label>
+        <select id="sort">
+          <option value="mais">Mais votos a tirar</option>
+          <option value="menos">Menos votos a tirar</option>
+          <option value="nome">Nome do local</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="chips" class="mt-5 flex flex-wrap gap-2" role="group" aria-label="Filtrar por distrito"></div>
+
+    <p class="mt-5 text-sm flex flex-wrap gap-x-5 gap-y-1">
+      <span><i class="sw" style="background: repeating-linear-gradient(45deg, var(--lula) 0 3px, var(--turn) 3px 6px)"></i>Votos a tirar de Flávio</span>
+      <span><i class="sw" style="background: var(--flavio)"></i>Votos de Flávio que continuam</span>
+    </p>
+
+    <div id="list" class="mt-4 grid gap-4 md:grid-cols-2"></div>
+  </section>
+
+  <section class="mt-12 panel p-5 sm:p-6 text-sm leading-relaxed">
+    <h2 class="font-semibold text-base">Como ler</h2>
+    <ul class="mt-2 grid gap-2 list-disc pl-5 max-w-prose">
+      <li>O máximo possível em cada local é tirar todos os votos de Flávio. Somando os 10 locais, são 1.991 votos.</li>
+      <li>Votos dos demais candidatos e abstenções não entram nessa conta.</li>
+      <li>Em todos os locais Lula já teve mais votos que Flávio no 1.º turno. Virar votos aumenta a vantagem, mas não é preciso para vencer.</li>
+      <li>"Cota da meta nacional" é o número calculado pelo site de origem: a parte da diferença nacional que caberia ao local, vinda de quem se absteve.</li>
+    </ul>
+    <p class="mt-4 muted max-w-prose">
+      Dados do 1.º turno de 2026 copiados do <a class="link" href="https://tatipara.github.io/vira_voto/#uf=BA&amp;mun=38474" target="_blank" rel="noopener">Vira Voto</a>, que usa o Portal de Dados Abertos do TSE (gerado em 09/10/2026, 01:30 UTC).
+      O site de origem chama a linha de Flávio de "Bolsonaro 2026, 1.º turno". Os dados não são separados por seção, só por local de votação.
+    </p>
+  </section>
+</main>
+
+<script>
+  var DATA = [
+    { nome: "Centro Educacional Permínio Souza Ferreira", dist: "Centro",               num: 1066, aptos: 2629, lula22: 1370, lula26: 1421, bol: 396, demais: 104, abst: 619, cota: 42 },
+    { nome: "Colégio Clodoaldo Brito",                    dist: "Cairu",                num: 1104, aptos: 1358, lula22: 749,  lula26: 789,  bol: 133, demais: 36,  abst: 308, cota: 21 },
+    { nome: "Colégio Estadual de Tempo Integral de Salinas da Margarida", dist: "Centro", num: 1023, aptos: 1960, lula22: 1015, lula26: 1072, bol: 275, demais: 58,  abst: 466, cota: 31 },
+    { nome: "Creche Casa de Belém",                       dist: "Encarnação",           num: 1090, aptos: 1397, lula22: 798,  lula26: 871,  bol: 146, demais: 31,  abst: 311, cota: 21 },
+    { nome: "Escola Dr. José Figueiredo",                 dist: "Porto da Telha",       num: 1074, aptos: 1049, lula22: 589,  lula26: 594,  bol: 148, demais: 29,  abst: 249, cota: 17 },
+    { nome: "Escola Modelo de Encarnação",                dist: "Encarnação",           num: 1180, aptos: 2870, lula22: 1630, lula26: 1709, bol: 311, demais: 69,  abst: 669, cota: 45 },
+    { nome: "Escola Modelo Wilson Ribeiro Pedreira",      dist: "Conceição de Salinas", num: 1031, aptos: 1897, lula22: 1028, lula26: 1067, bol: 234, demais: 40,  abst: 482, cota: 33 },
+    { nome: "Escola Municipal Sementinha do Saber 1",     dist: "Centro",               num: 1058, aptos: 1025, lula22: 582,  lula26: 627,  bol: 129, demais: 35,  abst: 192, cota: 13 },
+    { nome: "Escola Nossa Senhora da Conceição",          dist: "Conceição de Salinas", num: 1082, aptos: 870,  lula22: 499,  lula26: 548,  bol: 93,  demais: 20,  abst: 168, cota: 12 },
+    { nome: "Escola Valdemar Alves Menezes",              dist: "Centro",               num: 1015, aptos: 945,  lula22: 588,  lula26: 550,  bol: 126, demais: 30,  abst: 202, cota: 14 }
+  ];
+
+  var state = { p: 100, dist: "Todos", sort: "mais" };
+  var opened = {};
+  var copyTimer = null;
+
+  function $(id) { return document.getElementById(id); }
+  function f(n) { return n.toLocaleString("pt-BR"); }
+  function signed(n) { return (n > 0 ? "+" : n < 0 ? "−" : "") + f(Math.abs(n)); }
+  function distLabel(d) { return d === "Centro" ? "Centro" : "Distrito " + d; }
+
+  function calc(d) {
+    var r = Math.round(d.bol * state.p / 100);
+    return { d: d, r: r, B2: d.bol - r };
+  }
+
+  function visibleRows() {
+    var rows = DATA
+      .filter(function (d) { return state.dist === "Todos" || d.dist === state.dist; })
+      .map(calc);
+    rows.sort(function (a, b) {
+      if (state.sort === "nome") return a.d.nome.localeCompare(b.d.nome, "pt-BR");
+      if (state.sort === "menos") return a.r - b.r || a.d.nome.localeCompare(b.d.nome, "pt-BR");
+      return b.r - a.r || a.d.nome.localeCompare(b.d.nome, "pt-BR");
+    });
+    return rows;
+  }
+
+  function cardHtml(x) {
+    var d = x.d;
+    var wR = x.r / d.bol * 100, wB = x.B2 / d.bol * 100;
+    var seg = "";
+    if (x.r > 0) seg += "<span class=\"seg turn\" style=\"width:" + wR + "%\"></span>";
+    if (x.B2 > 0) seg += "<span class=\"seg flavio\" style=\"width:" + wB + "%\"></span>";
+    var label = f(x.r) + " votos a tirar de Flávio, " + f(x.B2) + " continuam";
+    var id = "n" + d.num;
+    return "<article class=\"panel p-5 min-w-0\">" +
+      "<h3 class=\"font-semibold leading-snug\">" + d.nome + "</h3>" +
+      "<p class=\"text-sm muted mt-0.5\">" + distLabel(d.dist) + " · Zona 30 · nº " + d.num + "</p>" +
+      "<p class=\"f-display text-7xl num mt-4\" style=\"color: var(--lula)\">" + f(x.r) + "</p>" +
+      "<p class=\"text-sm mt-1\">votos a tirar de Flávio <span class=\"muted\">(de " + f(d.bol) + " que ele teve aqui)</span></p>" +
+      "<div class=\"bar mt-4\" role=\"img\" aria-label=\"" + label + "\">" + seg + "</div>" +
+      "<p class=\"mt-3 text-sm\"><span class=\"muted\">Flávio fica com</span> <strong class=\"num\">" + f(x.B2) + "</strong> <span class=\"muted\">votos</span></p>" +
+      "<details class=\"mt-4 pt-3 border-t\" style=\"border-color: var(--line)\" data-id=\"" + id + "\"" + (opened[id] ? " open" : "") + ">" +
+        "<summary>Mais números deste local</summary>" +
+        "<dl class=\"facts\">" +
+          "<dt>Lula no 1.º turno</dt><dd>" + f(d.lula26) + "</dd>" +
+          "<dt>Lula já à frente por</dt><dd>" + f(d.lula26 - d.bol) + " votos</dd>" +
+          "<dt>Lula em 2022, 2.º turno</dt><dd>" + f(d.lula22) + " (" + signed(d.lula26 - d.lula22) + " agora)</dd>" +
+          "<dt>Eleitores aptos em 2026</dt><dd>" + f(d.aptos) + "</dd>" +
+          "<dt>Abstenção no 1.º turno</dt><dd>" + f(d.abst) + "</dd>" +
+          "<dt>Votos dos demais candidatos</dt><dd>" + f(d.demais) + "</dd>" +
+          "<dt>Cota da meta nacional</dt><dd>" + f(d.cota) + " votos</dd>" +
+        "</dl>" +
+      "</details>" +
+    "</article>";
+  }
+
+  function buildText(rows) {
+    var total = rows.reduce(function (s, x) { return s + x.r; }, 0);
+    var lines = ["Votos a tirar de Flávio Bolsonaro (" + state.p + "% dos votos dele), Salinas da Margarida, 1.º turno de 2026:"];
+    rows.forEach(function (x) { lines.push("- " + x.d.nome + ": " + f(x.r) + " de " + f(x.d.bol)); });
+    lines.push("Total: " + f(total));
+    return lines.join("\n");
+  }
+
+  function render() {
+    var rows = visibleRows();
+    var n = rows.length;
+    var sumB = 0, sumR = 0;
+    rows.forEach(function (x) { sumB += x.d.bol; sumR += x.r; });
+
+    $("pOut").textContent = state.p + "%";
+    $("total").textContent = f(sumR);
+    $("totalLabel").textContent = "votos a tirar de Flávio em " + n + (n === 1 ? " local" : " locais") +
+      " (de " + f(sumB) + " que ele teve)";
+
+    $("list").innerHTML = rows.map(cardHtml).join("");
+
+    Array.prototype.forEach.call($("presets").children, function (b) {
+      b.setAttribute("aria-pressed", String(Number(b.dataset.v) === state.p));
+    });
+    Array.prototype.forEach.call($("chips").children, function (b) {
+      b.setAttribute("aria-pressed", String(b.dataset.v === state.dist));
+    });
+  }
+
+  function buildControls() {
+    var presets = [25, 50, 75, 100];
+    $("presets").innerHTML = presets.map(function (v) {
+      return "<button type=\"button\" class=\"chip\" data-v=\"" + v + "\" aria-pressed=\"false\">" + v + "%</button>";
+    }).join("");
+
+    var seen = {}, names = ["Todos"];
+    DATA.forEach(function (d) { if (!seen[d.dist]) { seen[d.dist] = true; names.push(d.dist); } });
+    $("chips").innerHTML = names.map(function (nm) {
+      var count = nm === "Todos" ? DATA.length : DATA.filter(function (d) { return d.dist === nm; }).length;
+      return "<button type=\"button\" class=\"chip\" data-v=\"" + nm + "\" aria-pressed=\"false\">" + nm + " (" + count + ")</button>";
+    }).join("");
+  }
+
+  $("p").addEventListener("input", function (e) { state.p = Number(e.target.value); render(); });
+  $("presets").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    state.p = Number(b.dataset.v); $("p").value = state.p; render();
+  });
+  $("chips").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    state.dist = b.dataset.v; render();
+  });
+  $("sort").addEventListener("change", function (e) { state.sort = e.target.value; render(); });
+  $("list").addEventListener("toggle", function (e) {
+    var el = e.target;
+    if (el.tagName === "DETAILS" && el.dataset.id) opened[el.dataset.id] = el.open;
+  }, true);
+
+  function say(msg) {
+    $("copyMsg").textContent = msg;
+    clearTimeout(copyTimer);
+    copyTimer = setTimeout(function () { $("copyMsg").textContent = ""; }, 3500);
+  }
+  $("copy").addEventListener("click", function () {
+    var text = buildText(visibleRows());
+    var box = $("copyBox");
+    function fallback() {
+      box.value = text; box.hidden = false; box.focus(); box.select();
+      say("Não foi possível copiar sozinho. O texto está selecionado abaixo.");
+    }
+    try {
+      navigator.clipboard.writeText(text).then(function () { box.hidden = true; say("Lista copiada."); }, fallback);
+    } catch (err) { fallback(); }
+  });
+
+  buildControls();
+  render();
+</script>
+
+</body></html>
